@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/header";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 
@@ -25,7 +24,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" disableTransitionOnChange>
-          <Header />
           {children}
         </ThemeProvider>
       </body>

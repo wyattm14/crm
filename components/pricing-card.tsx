@@ -40,7 +40,7 @@ export default function PricingCard({
   async function handleSelectPlan(priceId: string) {
     setIsLoading(true);
     const client = createUpdateClient();
-    const redirectUrl = `http://localhost:3000/protected/subscription`;
+    const redirectUrl = `http://localhost:3000/dashboard/subscription`;
     const { data, error } = await client.billing.createCheckoutSession(
       priceId,
       {

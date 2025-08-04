@@ -7,7 +7,7 @@ export default async function ProtectedSidebar() {
 
   return (
     <InPageSidebar
-      basePath="/protected"
+              basePath="/dashboard"
       items={[
         {
           label: "Account",
