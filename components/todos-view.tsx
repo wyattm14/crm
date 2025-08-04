@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import CustomDropdown from "@/components/ui/custom-dropdown";
 
 interface Customer {
   id: string;
@@ -255,49 +256,48 @@ export default function TodosView({ customers, todos }: { customers: Customer[],
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Customer *
                 </label>
-                <select
+                <CustomDropdown
+                  options={customers.map(customer => ({
+                    value: customer.id,
+                    label: customer.company_name
+                  }))}
                   value={newTodo.customer_id}
-                  onChange={(e) => setNewTodo({ ...newTodo, customer_id: e.target.value })}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="">Select customer</option>
-                  {customers.map((customer) => (
-                    <option key={customer.id} value={customer.id}>
-                      {customer.company_name}
-                    </option>
-                  ))}
-                </select>
+                  onChange={(value) => setNewTodo({ ...newTodo, customer_id: value })}
+                  placeholder="Select customer"
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Priority
                 </label>
-                <select
+                <CustomDropdown
+                  options={[
+                    { value: "low", label: "Low" },
+                    { value: "medium", label: "Medium" },
+                    { value: "high", label: "High" },
+                    { value: "urgent", label: "Urgent" }
+                  ]}
                   value={newTodo.priority}
-                  onChange={(e) => setNewTodo({ ...newTodo, priority: e.target.value as Todo["priority"] })}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                  <option value="urgent">Urgent</option>
-                </select>
+                  onChange={(value) => setNewTodo({ ...newTodo, priority: value as Todo["priority"] })}
+                  placeholder="Select priority"
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Type
                 </label>
-                <select
+                <CustomDropdown
+                  options={[
+                    { value: "task", label: "Task" },
+                    { value: "feature_request", label: "Feature Request" },
+                    { value: "bug_fix", label: "Bug Fix" },
+                    { value: "follow_up", label: "Follow Up" },
+                    { value: "other", label: "Other" }
+                  ]}
                   value={newTodo.type}
-                  onChange={(e) => setNewTodo({ ...newTodo, type: e.target.value as Todo["type"] })}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="task">Task</option>
-                  <option value="feature_request">Feature Request</option>
-                  <option value="bug_fix">Bug Fix</option>
-                  <option value="follow_up">Follow Up</option>
-                  <option value="other">Other</option>
-                </select>
+                  onChange={(value) => setNewTodo({ ...newTodo, type: value as Todo["type"] })}
+                  placeholder="Select type"
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -344,46 +344,48 @@ export default function TodosView({ customers, todos }: { customers: Customer[],
           <div className="flex flex-wrap gap-4">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">Status</label>
-              <select
+              <CustomDropdown
+                options={[
+                  { value: "all", label: "All Status" },
+                  { value: "pending", label: "Pending" },
+                  { value: "in_progress", label: "In Progress" },
+                  { value: "completed", label: "Completed" },
+                  { value: "cancelled", label: "Cancelled" }
+                ]}
                 value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="all">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="in_progress">In Progress</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
+                onChange={setFilterStatus}
+                placeholder="All Status"
+              />
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">Priority</label>
-              <select
+              <CustomDropdown
+                options={[
+                  { value: "all", label: "All Priorities" },
+                  { value: "urgent", label: "Urgent" },
+                  { value: "high", label: "High" },
+                  { value: "medium", label: "Medium" },
+                  { value: "low", label: "Low" }
+                ]}
                 value={filterPriority}
-                onChange={(e) => setFilterPriority(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="all">All Priorities</option>
-                <option value="urgent">Urgent</option>
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
-              </select>
+                onChange={setFilterPriority}
+                placeholder="All Priorities"
+              />
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">Customer</label>
-              <select
+              <CustomDropdown
+                options={[
+                  { value: "all", label: "All Customers" },
+                  ...customers.map(customer => ({
+                    value: customer.id,
+                    label: customer.company_name
+                  }))
+                ]}
                 value={filterCustomer}
-                onChange={(e) => setFilterCustomer(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="all">All Customers</option>
-                {customers.map((customer) => (
-                  <option key={customer.id} value={customer.id}>
-                    {customer.company_name}
-                  </option>
-                ))}
-              </select>
+                onChange={setFilterCustomer}
+                placeholder="All Customers"
+              />
             </div>
           </div>
         </div>
@@ -470,33 +472,26 @@ export default function TodosView({ customers, todos }: { customers: Customer[],
             </div>
           </div>
         ) : (
-          <div className="flex items-center justify-center h-full">
+          <div className="flex items-center justify-center h-full p-8">
             <div className="text-center max-w-md mx-auto">
-              <div className="text-8xl mb-6">📋</div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-3">Ready to Get Organized?</h3>
-              <p className="text-gray-600 mb-8 leading-relaxed">
+              <div className="text-6xl mb-4">📋</div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">No todos yet</h3>
+              <p className="text-gray-600 mb-6">
                 {todos.length === 0 
-                  ? "Start tracking tasks, feature requests, and action items for your customers. Keep everything organized and never miss a deadline again."
-                  : "No todos match your current filters. Try adjusting your search criteria to see more results."
+                  ? "Start tracking tasks and action items for your customers."
+                  : "No todos match your current filters."
                 }
               </p>
               {todos.length === 0 && (
-                <div className="space-y-4">
-                  <button
-                    onClick={() => setShowAddTodo(true)}
-                    className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-sm"
-                  >
-                    <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                    Create Your First Todo
-                  </button>
-                  <div className="text-sm text-gray-500">
-                    <p>✨ Track customer tasks and feature requests</p>
-                    <p>📅 Set due dates and never miss deadlines</p>
-                    <p>🎯 Prioritize work with urgency levels</p>
-                  </div>
-                </div>
+                <button
+                  onClick={() => setShowAddTodo(true)}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Add Todo
+                </button>
               )}
             </div>
           </div>

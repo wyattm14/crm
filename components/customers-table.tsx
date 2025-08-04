@@ -107,13 +107,14 @@ export default function CustomersTable({ customers }: { customers: Customer[] })
 
   return (
     <div className="h-full flex flex-col">
-      {/* Header with search and stats */}
-      <div className="p-6 border-b border-gray-200">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-lg font-medium text-gray-900">Customer Overview</h2>
-              <p className="text-sm text-gray-500">
-                {customers.length} total customers
+              <h2 className="text-xl font-semibold text-gray-900">Customers</h2>
+              <p className="text-sm text-gray-500 mt-1">
+                Manage your customer relationships and pipeline
               </p>
             </div>
             <div className="flex items-center space-x-4">
@@ -135,11 +136,47 @@ export default function CustomersTable({ customers }: { customers: Customer[] })
                 onClick={() => setShowAddCustomer(true)}
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
               >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
                 Add Customer
               </button>
             </div>
           </div>
+        </div>
       </div>
+
+      {/* Stats Overview */}
+      {customers.length > 0 && (
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 p-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="text-center p-3 bg-white rounded-lg shadow-sm">
+                <div className="text-2xl font-bold text-gray-900">{customers.length}</div>
+                <div className="text-xs text-gray-500">Total Customers</div>
+              </div>
+              <div className="text-center p-3 bg-white rounded-lg shadow-sm">
+                <div className="text-2xl font-bold text-blue-600">
+                  {customers.filter(c => c.pipeline_stage === 'lead').length}
+                </div>
+                <div className="text-xs text-gray-500">Leads</div>
+              </div>
+              <div className="text-center p-3 bg-white rounded-lg shadow-sm">
+                <div className="text-2xl font-bold text-green-600">
+                  {customers.filter(c => c.pipeline_stage === 'closed').length}
+                </div>
+                <div className="text-xs text-gray-500">Closed</div>
+              </div>
+              <div className="text-center p-3 bg-white rounded-lg shadow-sm">
+                <div className="text-2xl font-bold text-orange-600">
+                  {customers.filter(c => c.pipeline_stage === 'proposal' || c.pipeline_stage === 'negotiation').length}
+                </div>
+                <div className="text-xs text-gray-500">Active</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Table */}
       <div className="flex-1 overflow-auto">
@@ -304,21 +341,28 @@ export default function CustomersTable({ customers }: { customers: Customer[] })
             </table>
           </div>
         ) : (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center">
-              <div className="mx-auto h-24 w-24 text-gray-400 mb-4">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No customers found</h3>
-              <p className="text-gray-500 mb-6">
-                {searchTerm ? "Try adjusting your search terms." : "Get started by adding your first customer."}
+          <div className="flex items-center justify-center h-full p-8">
+            <div className="text-center max-w-md mx-auto">
+              <div className="text-6xl mb-4">👥</div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                {searchTerm ? "No customers found" : "No customers yet"}
+              </h3>
+              <p className="text-gray-600 mb-6">
+                {searchTerm 
+                  ? "Try adjusting your search terms to find what you're looking for."
+                  : "Start building your customer pipeline by adding your first customer."
+                }
               </p>
               {!searchTerm && (
-                <div className="text-sm text-gray-500">
-                  Customers will appear here once added to your pipeline.
-                </div>
+                <button
+                  onClick={() => setShowAddCustomer(true)}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Add Customer
+                </button>
               )}
             </div>
           </div>
